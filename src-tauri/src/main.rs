@@ -31,7 +31,7 @@ impl GlobalGraph {
 fn main() {
   tauri::Builder::default()
     .manage(GlobalGraph::new())
-    .invoke_handler(tauri::generate_handler![add_node,add_bidirectional_edge])
+    .invoke_handler(tauri::generate_handler![add_node,add_bidirectional_edge,reset_graph])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }
@@ -46,6 +46,14 @@ fn add_node(node_id: u32, node_name: String, graph: State<'_,GlobalGraph>) {
 fn add_bidirectional_edge(node1_id: u32, node1_name: String, node2_id: u32, node2_name: String, edge_weight: usize, graph: State<'_,GlobalGraph>){
     let mut graph = graph.graph.lock().unwrap();
     graph.add_bidirectional_edge(Node::new(node1_id, node1_name), Node::new(node2_id, node2_name), edge_weight);
-    println!("Edge added");
-    graph.print_graph();
 }
+
+#[tauri::command(rename_all = "snake_case")]
+fn reset_graph(graph: State<'_,GlobalGraph>){
+    let mut graph = graph.graph.lock().unwrap();
+    graph.reset_graph();
+}
+
+
+
+

@@ -1,0 +1,22 @@
+
+.resetButton{
+    position: absolute;
+    z-index: 1000;
+    top: 20px;
+    right: 20px;
+}
+
+.resetButton button{
+    background-color: #F4F4FE;
+    border-radius: 5px;
+    border-color:#6dd7fd;
+    border-style: solid;
+    color: #6dd7fd;
+    width: 60px;
+    height: 25px;
+}
+
+.resetButton button:hover{
+    background-color: #6dd7fd;
+    color: #F4F4FE;
+}

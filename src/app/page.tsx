@@ -1,6 +1,5 @@
 'use client'
-import Canvas from './components/CanvasComponent/CanvasComponent';
-import EdgeWeightDefinerComponent from './components/EdgeWeightDefinerComponent/EdgeWeightDefinerComponent';
+import GraphDrawer from './pages/GraphDrawer/GraphDrawer';
 
 
 
@@ -8,8 +7,7 @@ export default function Home() {
 
   return (
     <div>
-      {/* <EdgeWeightDefinerComponent></EdgeWeightDefinerComponent> */}
-      <Canvas></Canvas>
+      <GraphDrawer></GraphDrawer>
     </div>
   )
 }

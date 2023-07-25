@@ -2,8 +2,14 @@ import React, { useState } from 'react';
 import CircleComponent from '../CircleComponent/CircleComponent';
 import LineComponent from '../LineComponent/LineComponent';
 import { invoke } from '@tauri-apps/api/tauri';
-import EdgeWeightDefinerComponent from '../EdgeWeightDefinerComponent/EdgeWeightDefinerComponent';
+import ResetButton from '../ResetButton/ResetButton';
 
+interface CanvasProps {
+  setSavedEdgeWeight: React.Dispatch<React.SetStateAction<number | undefined>>;
+  setShowEdgeWeightDefiner: React.Dispatch<React.SetStateAction<boolean>>;
+  showEdgeWeightDefiner: boolean;
+}
+  
 
 //Defines the structure of the circle object
 interface Circle {
@@ -19,27 +25,30 @@ interface CirclePair {
 }
 
 //Defines the conmponent. It uses the useState hook to keep track of the circles
-const Canvas: React.FC = () => {
+const Canvas: React.FC<CanvasProps>= ({setSavedEdgeWeight,setShowEdgeWeightDefiner,showEdgeWeightDefiner}) => {
     const [circles, setCircles] = useState<Circle[]>([]);
     const [, setLastClickedCircle] = useState<Circle[]>([]);   
     const [circlePairs, setCirclePairs] = useState<CirclePair[]>([]);
     const [alphabet, _] = useState('ABCDEFGHIJKLMNOPQRSTUVWXYZ');
     const [index, setIndex] = useState<number>(0);
 
-    const [savedEdgeWeight, setSavedEdgeWeight] = React.useState<number>();
-
-    const [showEdgeWeightDefiner, setShowEdgeWeightDefiner] = React.useState<boolean>(false);
-
+    const emptyHooks = () => {
+      setCircles([]);
+      setLastClickedCircle([]);
+      setCirclePairs([]);
+      setIndex(0);
+    }
 
     //This is used to update the label of the circle
     const alphabetButtonClick = () => {
       const nextIndex = (index + 1) % alphabet.length;
-
       setIndex(nextIndex);
     }
 
   
-    const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    const handleCanvasClick = (event: React.MouseEvent<HTMLDivElement>) => {
+      if (showEdgeWeightDefiner) return;
+
       const rect = event.currentTarget.getBoundingClientRect();
       const x = event.clientX - rect.left - 25;
       const y = event.clientY - rect.top - 25;
@@ -59,40 +68,37 @@ const Canvas: React.FC = () => {
     };
 
     const handleCircleClick = (circle: Circle) => {
-        setLastClickedCircle(prevCircle => {
-          const newCircleArray = [...prevCircle, circle].slice(-2);
+      if (showEdgeWeightDefiner) return;
+
+      setLastClickedCircle(prevCircle => {
+        const newCircleArray = [...prevCircle, circle].slice(-2);
       
-          if (newCircleArray.length === 2) {
-            const frst = newCircleArray[0];
-            const snd = newCircleArray[1];
-            const pair: CirclePair = { start: frst, end: snd };
-            setCirclePairs(prevPairs => [...prevPairs, pair]);
-            invoke('add_bidirectional_edge', {node1_id: frst.id, node1_name: frst.label, node2_id: snd.id, node2_name: snd.label, edge_weight: 10})
-            newCircleArray.length = 0; // Reset the array
-            setShowEdgeWeightDefiner(true);
-          }
+        if (newCircleArray.length === 2) {
+          const frst = newCircleArray[0];
+          const snd = newCircleArray[1];
+          const pair: CirclePair = { start: frst, end: snd };
+          setCirclePairs(prevPairs => [...prevPairs, pair]);
+          invoke('add_bidirectional_edge', {node1_id: frst.id, node1_name: frst.label, node2_id: snd.id, node2_name: snd.label, edge_weight: 10})
+          newCircleArray.length = 0; // Reset the array
+          setShowEdgeWeightDefiner(true);
+        }
       
-          return newCircleArray;
+        return newCircleArray;
         });
       };
        
-      
+
     return (
       <div>
-      <div style={{ width: '100vw', height: '100vh', backgroundColor: 'white'}} onClick={handleClick}>
+        <ResetButton emptyHooks={emptyHooks} showEdgeWeightDefiner = {showEdgeWeightDefiner}/>
+        <div style={{ width: '100vw', height: '100vh', backgroundColor: 'white'}} onClick={handleCanvasClick}>
         {circles.map((circle, index) => (
           <CircleComponent key={index} circle={circle} onClick={handleCircleClick}/>
         ))}     
         {circlePairs.map((pair, index) => (
             <LineComponent key={index} start={pair.start} end={pair.end} label = "hei" />
         ))}
-      </div>
-      {showEdgeWeightDefiner && (
-        <EdgeWeightDefinerComponent
-          setSavedEdgeWeight={setSavedEdgeWeight}
-          setShowEdgeWeightDefiner={setShowEdgeWeightDefiner}
-        />
-      )}
+        </div>
       </div>
     );
   };

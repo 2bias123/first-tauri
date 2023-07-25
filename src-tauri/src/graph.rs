@@ -72,5 +72,9 @@ pub mod tgraph {
                 println!("Node: {:?} Neighbours: {:?}",key,value)
             })
         }
+
+        pub fn reset_graph(&mut self){
+            self.adj.clear();
+        }
     }
 }

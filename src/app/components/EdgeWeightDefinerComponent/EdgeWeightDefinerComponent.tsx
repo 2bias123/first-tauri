@@ -22,7 +22,7 @@ const EdgeWeightDefinerComponent: React.FC<EdgeWeightDefinerProps> = ({ setSaved
 
   return (
     <div className='container'>
-      <h3>What do you want the weight of the edge to be?</h3>
+      <h3>What do you want the weight from ... to ... to be?</h3>
       <form className='input_container' onSubmit={handleSubmit}>
         <input
           type="number"
