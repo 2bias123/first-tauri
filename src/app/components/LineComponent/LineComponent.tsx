@@ -8,7 +8,7 @@ interface Circle {
 interface LineProps {
   start: Circle;
   end: Circle;
-  label: string;
+  label: number;
 }
 
 const LineComponent: React.FC<LineProps> = ({ start, end, label }) => {

@@ -15,9 +15,13 @@ const EdgeWeightDefinerComponent: React.FC<EdgeWeightDefinerProps> = ({ setSaved
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    setSavedEdgeWeight(Number(edgeWeight));
-    setShowEdgeWeightDefiner(false);
-    setEdgeWeight('');
+    if (edgeWeight === '') {
+      alert('Please enter a number');
+    } else {
+      setSavedEdgeWeight(Number(edgeWeight));
+      setShowEdgeWeightDefiner(false);
+      setEdgeWeight('');
+    }
   };
 
   return (

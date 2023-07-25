@@ -31,7 +31,7 @@ impl GlobalGraph {
 fn main() {
   tauri::Builder::default()
     .manage(GlobalGraph::new())
-    .invoke_handler(tauri::generate_handler![add_node,add_bidirectional_edge,reset_graph])
+    .invoke_handler(tauri::generate_handler![add_node,add_bidirectional_edge,reset_graph,print_graph])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }
@@ -54,6 +54,11 @@ fn reset_graph(graph: State<'_,GlobalGraph>){
     graph.reset_graph();
 }
 
-
+#[tauri::command(rename_all = "snake_case")]
+fn print_graph(graph: State<'_,GlobalGraph>){
+    let mut graph = graph.graph.lock().unwrap();
+    println!("New graph:");
+    graph.print_graph();
+}
 
 

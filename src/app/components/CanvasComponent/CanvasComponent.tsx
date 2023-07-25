@@ -5,7 +5,7 @@ import { invoke } from '@tauri-apps/api/tauri';
 import ResetButton from '../ResetButton/ResetButton';
 
 interface CanvasProps {
-  setSavedEdgeWeight: React.Dispatch<React.SetStateAction<number | undefined>>;
+  savedEdgeWeight: number | undefined;
   setShowEdgeWeightDefiner: React.Dispatch<React.SetStateAction<boolean>>;
   showEdgeWeightDefiner: boolean;
 }
@@ -22,10 +22,11 @@ interface Circle {
 interface CirclePair {
     start: Circle;
     end: Circle;
+    edgeWeight: number;
 }
 
 //Defines the conmponent. It uses the useState hook to keep track of the circles
-const Canvas: React.FC<CanvasProps>= ({setSavedEdgeWeight,setShowEdgeWeightDefiner,showEdgeWeightDefiner}) => {
+const Canvas: React.FC<CanvasProps>= ({savedEdgeWeight,setShowEdgeWeightDefiner,showEdgeWeightDefiner}) => {
     const [circles, setCircles] = useState<Circle[]>([]);
     const [, setLastClickedCircle] = useState<Circle[]>([]);   
     const [circlePairs, setCirclePairs] = useState<CirclePair[]>([]);
@@ -76,13 +77,13 @@ const Canvas: React.FC<CanvasProps>= ({setSavedEdgeWeight,setShowEdgeWeightDefin
         if (newCircleArray.length === 2) {
           const frst = newCircleArray[0];
           const snd = newCircleArray[1];
-          const pair: CirclePair = { start: frst, end: snd };
+          const pair: CirclePair = { start: frst, end: snd, edgeWeight: savedEdgeWeight || 0 };
           setCirclePairs(prevPairs => [...prevPairs, pair]);
-          invoke('add_bidirectional_edge', {node1_id: frst.id, node1_name: frst.label, node2_id: snd.id, node2_name: snd.label, edge_weight: 10})
-          newCircleArray.length = 0; // Reset the array
           setShowEdgeWeightDefiner(true);
+          invoke('add_bidirectional_edge', {node1_id: pair.start.id, node1_name: pair.start.label, node2_id: pair.end.id, node2_name: pair.end.label, edge_weight: pair.edgeWeight})
+          newCircleArray.length = 0; // Reset the array
         }
-      
+        invoke('print_graph')
         return newCircleArray;
         });
       };
@@ -96,7 +97,7 @@ const Canvas: React.FC<CanvasProps>= ({setSavedEdgeWeight,setShowEdgeWeightDefin
           <CircleComponent key={index} circle={circle} onClick={handleCircleClick}/>
         ))}     
         {circlePairs.map((pair, index) => (
-            <LineComponent key={index} start={pair.start} end={pair.end} label = "hei" />
+            <LineComponent key={index} start={pair.start} end={pair.end} label = {pair.edgeWeight} />
         ))}
         </div>
       </div>
