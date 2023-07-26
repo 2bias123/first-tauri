@@ -77,6 +77,7 @@ const Canvas: React.FC<CanvasProps>= ({
     return (
       <div>
         <ResetButton emptyHooks={emptyHooks} showEdgeWeightDefiner = {showEdgeWeightDefiner}/>
+        {/* <button onClick={invoke()}>Run djikstra</button> */}
         <div style={{ width: '100vw', height: '100vh', backgroundColor: 'white'}} onClick={handleCanvasClick}>
         {circles.map((circle, index) => (
           <CircleComponent key={index} circle={circle} onClick={handleCircleClick}/>

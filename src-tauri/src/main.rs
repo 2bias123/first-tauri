@@ -12,6 +12,8 @@ mod shortest_path;
 
 use node::tnode::Node;
 use graph::tgraph::Graph;
+use shortest_path::short_path::djikstras;
+
 
 use std::sync::{Arc,Mutex};
 use tauri::State;
@@ -31,7 +33,7 @@ impl GlobalGraph {
 fn main() {
   tauri::Builder::default()
     .manage(GlobalGraph::new())
-    .invoke_handler(tauri::generate_handler![add_node,add_bidirectional_edge,reset_graph,print_graph])
+    .invoke_handler(tauri::generate_handler![add_node,add_bidirectional_edge,reset_graph,print_graph,get_shortest_path])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }
@@ -61,4 +63,10 @@ fn print_graph(graph: State<'_,GlobalGraph>){
     graph.print_graph();
 }
 
+#[tauri::command(rename_all = "snake_case")]
+fn get_shortest_path(start_node_id: Node, end_node_id: Node, graph: State<'_,GlobalGraph>) {
+    let mut graph = graph.graph.lock().unwrap();
+    let mut afa = djikstras(*graph, start_node_id, end_node_id);
+    println!("{:?}", afa);
+}
 
