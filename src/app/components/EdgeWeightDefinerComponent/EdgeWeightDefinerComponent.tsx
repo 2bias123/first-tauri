@@ -2,27 +2,23 @@ import React from 'react';
 import './EdgeWeightDefinerComponentStyle.css';
 
 interface EdgeWeightDefinerProps {
-  setSavedEdgeWeight: React.Dispatch<React.SetStateAction<number | undefined>>;
   setShowEdgeWeightDefiner: React.Dispatch<React.SetStateAction<boolean>>;
+  handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  edgeWeight: number | '';
+  setEdgeWeight: React.Dispatch<React.SetStateAction<number | ''>>;
 }
 
-const EdgeWeightDefinerComponent: React.FC<EdgeWeightDefinerProps> = ({ setSavedEdgeWeight, setShowEdgeWeightDefiner }) => {
-  const [edgeWeight, setEdgeWeight] = React.useState<number | ''>('');
+const EdgeWeightDefinerComponent: React.FC<EdgeWeightDefinerProps> = ({
+  setShowEdgeWeightDefiner,
+  handleSubmit,
+  edgeWeight,
+  setEdgeWeight,
+}) => {
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEdgeWeight(Number(event.target.value));
   };
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-    if (edgeWeight === '') {
-      alert('Please enter a number');
-    } else {
-      setSavedEdgeWeight(Number(edgeWeight));
-      setShowEdgeWeightDefiner(false);
-      setEdgeWeight('');
-    }
-  };
 
   return (
     <div className='container'>
@@ -36,7 +32,7 @@ const EdgeWeightDefinerComponent: React.FC<EdgeWeightDefinerProps> = ({ setSaved
           onChange={handleInputChange}
         />
         <button type='submit'>Submit</button>
-        <button onClick={()=>setShowEdgeWeightDefiner(false)}>Cancel</button>
+        <button onClick={() => setShowEdgeWeightDefiner(false)}>Cancel</button>
       </form>
     </div>
   );

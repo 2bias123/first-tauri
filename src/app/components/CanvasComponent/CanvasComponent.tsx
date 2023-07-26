@@ -5,9 +5,11 @@ import { invoke } from '@tauri-apps/api/tauri';
 import ResetButton from '../ResetButton/ResetButton';
 
 interface CanvasProps {
-  savedEdgeWeight: number | undefined;
-  setShowEdgeWeightDefiner: React.Dispatch<React.SetStateAction<boolean>>;
   showEdgeWeightDefiner: boolean;
+  circlePairs: CirclePair[];
+  setLastClickedCircle: React.Dispatch<React.SetStateAction<Circle[]>>;
+  setCirclePairs: React.Dispatch<React.SetStateAction<CirclePair[]>>;
+  handleCircleClick: (circle: Circle) => void;
 }
   
 
@@ -26,10 +28,14 @@ interface CirclePair {
 }
 
 //Defines the conmponent. It uses the useState hook to keep track of the circles
-const Canvas: React.FC<CanvasProps>= ({savedEdgeWeight,setShowEdgeWeightDefiner,showEdgeWeightDefiner}) => {
+const Canvas: React.FC<CanvasProps>= ({
+  showEdgeWeightDefiner,
+  circlePairs,
+  setCirclePairs,
+  setLastClickedCircle,
+  handleCircleClick
+}) => {
     const [circles, setCircles] = useState<Circle[]>([]);
-    const [, setLastClickedCircle] = useState<Circle[]>([]);   
-    const [circlePairs, setCirclePairs] = useState<CirclePair[]>([]);
     const [alphabet, _] = useState('ABCDEFGHIJKLMNOPQRSTUVWXYZ');
     const [index, setIndex] = useState<number>(0);
 
@@ -67,27 +73,6 @@ const Canvas: React.FC<CanvasProps>= ({savedEdgeWeight,setShowEdgeWeightDefiner,
         invoke('add_node', {node_id: index, node_name: alphabet[index]})
       } 
     };
-
-    const handleCircleClick = (circle: Circle) => {
-      if (showEdgeWeightDefiner) return;
-
-      setLastClickedCircle(prevCircle => {
-        const newCircleArray = [...prevCircle, circle].slice(-2);
-      
-        if (newCircleArray.length === 2) {
-          const frst = newCircleArray[0];
-          const snd = newCircleArray[1];
-          const pair: CirclePair = { start: frst, end: snd, edgeWeight: savedEdgeWeight || 0 };
-          setCirclePairs(prevPairs => [...prevPairs, pair]);
-          setShowEdgeWeightDefiner(true);
-          invoke('add_bidirectional_edge', {node1_id: pair.start.id, node1_name: pair.start.label, node2_id: pair.end.id, node2_name: pair.end.label, edge_weight: pair.edgeWeight})
-          newCircleArray.length = 0; // Reset the array
-        }
-        invoke('print_graph')
-        return newCircleArray;
-        });
-      };
-       
 
     return (
       <div>
