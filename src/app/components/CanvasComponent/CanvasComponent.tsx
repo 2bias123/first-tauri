@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import CircleComponent from '../CircleComponent/CircleComponent';
 import LineComponent from '../LineComponent/LineComponent';
 import { invoke } from '@tauri-apps/api/tauri';
-import ResetButton from '../ResetButton/ResetButton';
+import ButtonComponent from '../ButtonComponent/ButtonComponent';
+import './CanvasComponentStyle.css';
 
 interface CanvasProps {
   showEdgeWeightDefiner: boolean;
@@ -40,6 +41,8 @@ const Canvas: React.FC<CanvasProps>= ({
     const [index, setIndex] = useState<number>(0);
 
     const emptyHooks = () => {
+      if (showEdgeWeightDefiner) return;
+      invoke('reset_graph');
       setCircles([]);
       setLastClickedCircle([]);
       setCirclePairs([]);
@@ -74,11 +77,17 @@ const Canvas: React.FC<CanvasProps>= ({
       } 
     };
 
+    
+
     return (
       <div>
-        <ResetButton emptyHooks={emptyHooks} showEdgeWeightDefiner = {showEdgeWeightDefiner}/>
-        {/* <button onClick={invoke()}>Run djikstra</button> */}
-        <div style={{ width: '100vw', height: '100vh', backgroundColor: 'white'}} onClick={handleCanvasClick}>
+        <div className='buttonsContainer'>
+          <ButtonComponent onClick={emptyHooks} text={'Reset'}/>
+          <ButtonComponent onClick={()=>invoke('get_shortest_path',{
+            start_node_id: 0,start_node_name:'A', end_node_id: 3,end_node_name: 'D'
+          })} text={'Run djikstra'}/>
+        </div>
+        <div className='canvasContainer' onClick={handleCanvasClick}>
         {circles.map((circle, index) => (
           <CircleComponent key={index} circle={circle} onClick={handleCircleClick}/>
         ))}     

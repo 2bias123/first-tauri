@@ -63,11 +63,10 @@ const GraphDrawer: React.FC = () => {
                 setShowEdgeWeightDefiner(false);
                 setEdgeWeight('');
             }
-            invoke('print_graph');
           };
 
     return (
-        <div className="graph-drawer-container">
+        <div>
             <Canvas 
             circlePairs={circlePairs}
             setCirclePairs={setCirclePairs}

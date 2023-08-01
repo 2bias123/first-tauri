@@ -1,15 +1,9 @@
-.graph-drawer-container {
-    position: relative;
-}
-  
-  
-  /* Style for the EdgeWeightDefinerComponent when it is visible */
+
 .edge-weight-definer-container {
-    /* Center the EdgeWeightDefinerComponent horizontally and vertically */
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 1000;
-}
+} 
 

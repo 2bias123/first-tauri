@@ -11,7 +11,7 @@ pub mod tgraph {
     }
 
 
-    impl< T: Eq + std::hash::Hash + Clone + std::fmt::Debug> Graph<T> {
+    impl< T: Eq + std::hash::Hash + Clone + std::fmt::Debug > Graph<T> {
         pub fn new() -> Graph<T> {
             Graph { 
                 adj: HashMap::<T, HashMap<T, usize>>::new()

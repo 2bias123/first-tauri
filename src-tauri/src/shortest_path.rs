@@ -27,7 +27,7 @@ pub mod short_path {
         }
     }
 
-    pub fn djikstras<T: Eq + std::hash::Hash + Clone + std::fmt::Debug>(mut g: Graph<T>,src: T, dest: T) -> Vec<T> {
+    pub fn djikstras<T: Eq + std::hash::Hash + Clone + std::fmt::Debug>(g: &mut Graph<T>,src: T, dest: T) -> Vec<T> {
         
         let mut distancemap: HashMap<T, usize> = HashMap::new();
         

@@ -9,13 +9,14 @@ mod player;
 mod buildgraph;
 mod color_enum;
 mod shortest_path;
+mod test;
 
 use node::tnode::Node;
 use graph::tgraph::Graph;
 use shortest_path::short_path::djikstras;
 
 
-use std::sync::{Arc,Mutex};
+use std::{sync::{Arc,Mutex, MutexGuard}, ops::{Deref, DerefMut}};
 use tauri::State;
 
 struct GlobalGraph {
@@ -64,9 +65,12 @@ fn print_graph(graph: State<'_,GlobalGraph>){
 }
 
 #[tauri::command(rename_all = "snake_case")]
-fn get_shortest_path(start_node_id: Node, end_node_id: Node, graph: State<'_,GlobalGraph>) {
+fn get_shortest_path(start_node_id: u32,start_node_name:String, end_node_id: u32,end_node_name: String, graph: State<'_,GlobalGraph>) {
     let mut graph = graph.graph.lock().unwrap();
-    let mut afa = djikstras(*graph, start_node_id, end_node_id);
+
+    let mut inner_graph = graph.deref_mut();
+    
+    let mut afa = djikstras(inner_graph, Node::new(start_node_id, start_node_name), Node::new(end_node_id, end_node_name));
     println!("{:?}", afa);
 }
 
