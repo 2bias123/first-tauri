@@ -3,6 +3,7 @@ import Canvas from '../../components/CanvasComponent/CanvasComponent';
 import EdgeWeightDefinerComponent from '../../components/EdgeWeightDefinerComponent/EdgeWeightDefinerComponent';
 import './GraphDrawerStyle.css'
 import { invoke } from '@tauri-apps/api/tauri';
+import DjikstraInput from '@/app/components/DjikstraInput/DjikstraInput';
 
 
 //Defines the structure of the circle object
@@ -22,6 +23,9 @@ interface Circle {
 const GraphDrawer: React.FC = () => {
 
     const [showEdgeWeightDefiner, setShowEdgeWeightDefiner] = React.useState<boolean>(false);
+    const [showDjikstraInput, setShowDjikstraInput] = React.useState<boolean>(false);
+    const [startDjikstra, setStartDjikstra] = React.useState<string>('');
+    const [endDjikstra, setEndDjikstra] = React.useState<string>('');
     const [, setLastClickedCircle] = useState<Circle[]>([]);   
     const [circlePairs, setCirclePairs] = useState<CirclePair[]>([]);
     const [edgeWeight, setEdgeWeight] = React.useState<number | ''>('');
@@ -65,6 +69,18 @@ const GraphDrawer: React.FC = () => {
             }
           };
 
+    const handleDjikstra = (e: { preventDefault: () => void }) => {
+        e.preventDefault();
+        if (startDjikstra === '' || endDjikstra === '') {
+          alert('Please enter a number');
+        } else {
+            invoke('djikstra', {
+                start: startDjikstra,
+                end: endDjikstra
+                })
+        setShowDjikstraInput(false);
+      }
+    }
     return (
         <div>
             <Canvas 
@@ -73,6 +89,7 @@ const GraphDrawer: React.FC = () => {
             setLastClickedCircle={setLastClickedCircle}
             handleCircleClick={handleCircleClick}
             showEdgeWeightDefiner={showEdgeWeightDefiner}
+            setShowDjikstraInput={setShowDjikstraInput}
             />
             {showEdgeWeightDefiner && (
             <div className="edge-weight-definer-container">
@@ -83,10 +100,19 @@ const GraphDrawer: React.FC = () => {
                 setEdgeWeight={setEdgeWeight}
                 />
             </div>
-           
       )}
+      {showDjikstraInput && (
+        <div className="djikstra-input-container">
+          <DjikstraInput
+            setShowDjikstraInput={setShowDjikstraInput}
+            setStartNode={setStartDjikstra}
+            setEndNode={setEndDjikstra}
+            handleSubmit={handleDjikstra}
+          />
         </div>
-    )   
-};
+      )
+        }
+        </div>
+    )};
 
 export default GraphDrawer;

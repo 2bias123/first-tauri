@@ -11,6 +11,7 @@ interface CanvasProps {
   setLastClickedCircle: React.Dispatch<React.SetStateAction<Circle[]>>;
   setCirclePairs: React.Dispatch<React.SetStateAction<CirclePair[]>>;
   handleCircleClick: (circle: Circle) => void;
+  setShowDjikstraInput: React.Dispatch<React.SetStateAction<boolean>>;
 }
   
 
@@ -34,7 +35,8 @@ const Canvas: React.FC<CanvasProps>= ({
   circlePairs,
   setCirclePairs,
   setLastClickedCircle,
-  handleCircleClick
+  handleCircleClick,
+  setShowDjikstraInput
 }) => {
     const [circles, setCircles] = useState<Circle[]>([]);
     const [alphabet, _] = useState('ABCDEFGHIJKLMNOPQRSTUVWXYZ');
@@ -77,15 +79,18 @@ const Canvas: React.FC<CanvasProps>= ({
       } 
     };
 
+    const djikstra = () => {
+      invoke('get_shortest_path',{
+        start_node_id: 0,start_node_name:'A', end_node_id: 3,end_node_name: 'D'
+      }).then((response) => {console.log(response)})
+    }
     
 
     return (
       <div>
         <div className='buttonsContainer'>
           <ButtonComponent onClick={emptyHooks} text={'Reset'}/>
-          <ButtonComponent onClick={()=>invoke('get_shortest_path',{
-            start_node_id: 0,start_node_name:'A', end_node_id: 3,end_node_name: 'D'
-          })} text={'Run djikstra'}/>
+          <ButtonComponent onClick={()=>setShowDjikstraInput(true)} text={'Run djikstra'}/>
         </div>
         <div className='canvasContainer' onClick={handleCanvasClick}>
         {circles.map((circle, index) => (

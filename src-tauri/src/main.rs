@@ -65,12 +65,13 @@ fn print_graph(graph: State<'_,GlobalGraph>){
 }
 
 #[tauri::command(rename_all = "snake_case")]
-fn get_shortest_path(start_node_id: u32,start_node_name:String, end_node_id: u32,end_node_name: String, graph: State<'_,GlobalGraph>) {
+fn get_shortest_path(start_node_id: u32,start_node_name:String, end_node_id: u32,end_node_name: String, graph: State<'_,GlobalGraph>) -> Vec<Node>{
     let mut graph = graph.graph.lock().unwrap();
 
     let mut inner_graph = graph.deref_mut();
     
     let mut afa = djikstras(inner_graph, Node::new(start_node_id, start_node_name), Node::new(end_node_id, end_node_name));
-    println!("{:?}", afa);
+    
+    afa
 }
 
