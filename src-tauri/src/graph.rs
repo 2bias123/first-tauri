@@ -1,11 +1,6 @@
 pub mod tgraph {
     use std::collections::HashMap;
 
-    //Magnus said that i should use a hashmap with the nodes as key, and another hashmap as value. 
-    //The key in the second hashmap is the node that the first key is connected to and the value is the weigth of the edge
-    //The key in the first hashmap has ownership of the original node, and the second hashmap has a clone of the original node. 
-    //Need to redefine the equals method for nodes so that if the id is the same we say that the object is the same.
-    //Use iterator for what its worth
     pub struct Graph<T> {
         adj: HashMap<T,HashMap<T,usize>>
     }

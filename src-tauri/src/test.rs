@@ -6,15 +6,15 @@ mod test {
     fn buld_test_graph() -> Graph<Node>{
         let mut g: Graph<Node> = Graph::new();
 
-        let zero = Node::new(0,"Zero".to_string());
-        let one = Node::new(1,"One".to_string());
-        let two = Node::new(2,"Two".to_string());
-        let three = Node::new(3,"Three".to_string());
-        let four = Node::new(4,"Four".to_string());
-        let five = Node::new(5,"Five".to_string());
-        let six = Node::new(6,"Six".to_string());
-        let seven = Node::new(7,"Seven".to_string());
-        let eight = Node::new(8,"Eight".to_string());
+        let zero = Node::new("Zero".to_string());
+        let one = Node::new("One".to_string());
+        let two = Node::new("Two".to_string());
+        let three = Node::new("Three".to_string());
+        let four = Node::new("Four".to_string());
+        let five = Node::new("Five".to_string());
+        let six = Node::new("Six".to_string());
+        let seven = Node::new("Seven".to_string());
+        let eight = Node::new("Eight".to_string());
 
         g.add_node(zero.clone());
         g.add_node(one.clone());
@@ -46,15 +46,15 @@ mod test {
 
     #[test]
     fn test_djikstras_1() {
-        let zero = Node::new(0,"Zero".to_string());
-        let one = Node::new(1,"One".to_string());
-        let two = Node::new(2,"Two".to_string());
-        let three = Node::new(3,"Three".to_string());
-        let four = Node::new(4,"Four".to_string());
-        let five = Node::new(5,"Five".to_string());
-        let six = Node::new(6,"Six".to_string());
-        let seven = Node::new(7,"Seven".to_string());
-        let eight = Node::new(8,"Eight".to_string());
+        let zero = Node::new("Zero".to_string());
+        let one = Node::new("One".to_string());
+        let two = Node::new("Two".to_string());
+        let three = Node::new("Three".to_string());
+        let four = Node::new("Four".to_string());
+        let five = Node::new("Five".to_string());
+        let six = Node::new("Six".to_string());
+        let seven = Node::new("Seven".to_string());
+        let eight = Node::new("Eight".to_string());
 
         let fasit = vec![zero.clone(),seven.clone(),six.clone(),five.clone(),four.clone()];
 
@@ -68,15 +68,15 @@ mod test {
     //This test wont pass becasue it goes to seven and not via 2 and 1 which is correct
     #[test]
     fn test_djikstras_2() {
-        let zero = Node::new(0,"Zero".to_string());
-        let one = Node::new(1,"One".to_string());
-        let two = Node::new(2,"Two".to_string());
-        let three = Node::new(3,"Three".to_string());
-        let four = Node::new(4,"Four".to_string());
-        let five = Node::new(5,"Five".to_string());
-        let six = Node::new(6,"Six".to_string());
-        let seven = Node::new(7,"Seven".to_string());
-        let eight = Node::new(8,"Eight".to_string());
+        let zero = Node::new("Zero".to_string());
+        let one = Node::new("One".to_string());
+        let two = Node::new("Two".to_string());
+        let three = Node::new("Three".to_string());
+        let four = Node::new("Four".to_string());
+        let five = Node::new("Five".to_string());
+        let six = Node::new("Six".to_string());
+        let seven = Node::new("Seven".to_string());
+        let eight = Node::new("Eight".to_string());
 
         let fasit = vec![eight.clone(),two.clone(),one.clone(),zero.clone()];
 
@@ -91,15 +91,15 @@ mod test {
 
     #[test]
     fn test_djikstras_3() {
-        let zero = Node::new(0,"Zero".to_string());
-        let one = Node::new(1,"One".to_string());
-        let two = Node::new(2,"Two".to_string());
-        let three = Node::new(3,"Three".to_string());
-        let four = Node::new(4,"Four".to_string());
-        let five = Node::new(5,"Five".to_string());
-        let six = Node::new(6,"Six".to_string());
-        let seven = Node::new(7,"Seven".to_string());
-        let eight = Node::new(8,"Eight".to_string());
+        let zero = Node::new("Zero".to_string());
+        let one = Node::new("One".to_string());
+        let two = Node::new("Two".to_string());
+        let three = Node::new("Three".to_string());
+        let four = Node::new("Four".to_string());
+        let five = Node::new("Five".to_string());
+        let six = Node::new("Six".to_string());
+        let seven = Node::new("Seven".to_string());
+        let eight = Node::new("Eight".to_string());
 
         let fasit = vec![one.clone(),two.clone(),five.clone()];
 
@@ -129,13 +129,13 @@ mod test {
     fn test_get_neighbors() {
         let mut g = buld_test_graph();
 
-        let mut eight = Node::new(8,"Eight".to_string());
+        let mut eight = Node::new("Eight".to_string());
 
         let mut iter = g.get_neighbors(&eight).keys();
 
-        let two = Node::new(2,"Two".to_string());
-        let six = Node::new(6,"Six".to_string());
-        let seven = Node::new(7,"Seven".to_string());
+        let two = Node::new("Two".to_string());
+        let six = Node::new("Six".to_string());
+        let seven = Node::new("Seven".to_string());
 
         let neighbors = vec![two, six, seven];
 
@@ -148,7 +148,7 @@ mod test {
     fn test_get_neighbors_weight_1() {
         let mut g = buld_test_graph();
 
-        let mut eight = Node::new(8,"Eight".to_string());
+        let mut eight = Node::new("Eight".to_string());
 
         let mut iter = g.get_neighbors(&eight).values();
 
@@ -163,7 +163,7 @@ mod test {
     fn test_get_neighbors_weight_2() {
         let mut g = buld_test_graph();
 
-        let five = Node::new(5,"Five".to_string());
+        let five = Node::new("Five".to_string());
 
         let mut iter = g.get_neighbors(&five).values();
                 

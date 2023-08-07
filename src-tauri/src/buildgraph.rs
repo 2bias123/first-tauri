@@ -7,13 +7,13 @@ pub mod buildgraph {
         let mut g: Graph<Node> = Graph::new();
 
 
-        let sanfran = Node::new(1,"San Fransisco".to_string());
-        let la = Node::new(2,"Los Angeles".to_string());
-        let vegas = Node::new(3,"Las Vegas".to_string());
-        let salt_lake = Node::new(4,"Salt Lake City".to_string());
-        let phoenix = Node::new(5,"Phoenix".to_string());
-        let el_paso = Node::new(6,"El Paso".to_string());
-        let santa_fe = Node::new(7,"Santa Fe".to_string());
+        let sanfran = Node::new("San Fransisco".to_string());
+        let la = Node::new("Los Angeles".to_string());
+        let vegas = Node::new("Las Vegas".to_string());
+        let salt_lake = Node::new("Salt Lake City".to_string());
+        let phoenix = Node::new("Phoenix".to_string());
+        let el_paso = Node::new("El Paso".to_string());
+        let santa_fe = Node::new("Santa Fe".to_string());
 
 
         g.add_node(sanfran.clone());

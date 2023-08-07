@@ -40,15 +40,15 @@ fn main() {
 }
 
 #[tauri::command(rename_all = "snake_case")]
-fn add_node(node_id: u32, node_name: String, graph: State<'_,GlobalGraph>) {
+fn add_node(node_name: String, graph: State<'_,GlobalGraph>) {
     let mut graph = graph.graph.lock().unwrap();
-    graph.add_node(Node::new(node_id,node_name));
+    graph.add_node(Node::new(node_name));
 }
 
 #[tauri::command(rename_all = "snake_case")]
-fn add_bidirectional_edge(node1_id: u32, node1_name: String, node2_id: u32, node2_name: String, edge_weight: usize, graph: State<'_,GlobalGraph>){
+fn add_bidirectional_edge(node1_name: String, node2_name: String, edge_weight: usize, graph: State<'_,GlobalGraph>){
     let mut graph = graph.graph.lock().unwrap();
-    graph.add_bidirectional_edge(Node::new(node1_id, node1_name), Node::new(node2_id, node2_name), edge_weight);
+    graph.add_bidirectional_edge(Node::new(node1_name), Node::new(node2_name), edge_weight);
 }
 
 #[tauri::command(rename_all = "snake_case")]
@@ -65,12 +65,12 @@ fn print_graph(graph: State<'_,GlobalGraph>){
 }
 
 #[tauri::command(rename_all = "snake_case")]
-fn get_shortest_path(start_node_id: u32,start_node_name:String, end_node_id: u32,end_node_name: String, graph: State<'_,GlobalGraph>) -> Vec<Node>{
+fn get_shortest_path(start_node_name:String, end_node_name: String, graph: State<'_,GlobalGraph>) -> Vec<Node>{
     let mut graph = graph.graph.lock().unwrap();
 
     let mut inner_graph = graph.deref_mut();
     
-    let mut afa = djikstras(inner_graph, Node::new(start_node_id, start_node_name), Node::new(end_node_id, end_node_name));
+    let mut afa = djikstras(inner_graph, Node::new( start_node_name), Node::new( end_node_name));
     
     afa
 }
