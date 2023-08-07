@@ -8,12 +8,11 @@ interface DjikstraInputProps {
     handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 }
 
-
-
 const DjikstraInput:React.FC<DjikstraInputProps> = ({setShowDjikstraInput,setStartNode,setEndNode,handleSubmit}) => {
 
     const handleInputChangeStart = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setStartNode(event.target.value);
+        const value = event.target.value;
+        setStartNode(value);
     };
 
     const handleInputChangeEnd = (event: React.ChangeEvent<HTMLInputElement>) => {

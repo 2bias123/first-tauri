@@ -18,7 +18,7 @@ interface CanvasProps {
 //Defines the structure of the circle object
 interface Circle {
   x: number;
-  y: number;
+  y: number;  
   label: string;
   id: number;
 }
@@ -36,7 +36,7 @@ const Canvas: React.FC<CanvasProps>= ({
   setCirclePairs,
   setLastClickedCircle,
   handleCircleClick,
-  setShowDjikstraInput
+  setShowDjikstraInput,
 }) => {
     const [circles, setCircles] = useState<Circle[]>([]);
     const [alphabet, _] = useState('ABCDEFGHIJKLMNOPQRSTUVWXYZ');
@@ -57,7 +57,6 @@ const Canvas: React.FC<CanvasProps>= ({
       setIndex(nextIndex);
     }
 
-  
     const handleCanvasClick = (event: React.MouseEvent<HTMLDivElement>) => {
       if (showEdgeWeightDefiner) return;
 
@@ -75,16 +74,11 @@ const Canvas: React.FC<CanvasProps>= ({
       if (!isOverlapping) {
         setCircles((prevCircles) => [...prevCircles, clickedCircle]);
         alphabetButtonClick();
-        invoke('add_node', {node_id: index, node_name: alphabet[index]})
+        invoke('add_node', {node_name: alphabet[index]})
       } 
     };
 
-    const djikstra = () => {
-      invoke('get_shortest_path',{
-        start_node_id: 0,start_node_name:'A', end_node_id: 3,end_node_name: 'D'
-      }).then((response) => {console.log(response)})
-    }
-    
+
 
     return (
       <div>

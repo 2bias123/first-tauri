@@ -57,9 +57,7 @@ const GraphDrawer: React.FC = () => {
                 const pair: CirclePair = { start: frst, end: snd, edgeWeight: edgeWeight || 0};
                 setCirclePairs(prevPairs => [...prevPairs, pair]);
                 invoke('add_bidirectional_edge', {
-                    node1_id: pair.start.id,
                     node1_name: pair.start.label,
-                    node2_id: pair.end.id,
                     node2_name: pair.end.label,
                     edge_weight: pair.edgeWeight
                     })
@@ -72,11 +70,16 @@ const GraphDrawer: React.FC = () => {
     const handleDjikstra = (e: { preventDefault: () => void }) => {
         e.preventDefault();
         if (startDjikstra === '' || endDjikstra === '') {
-          alert('Please enter a number');
-        } else {
-            invoke('djikstra', {
-                start: startDjikstra,
-                end: endDjikstra
+          alert('Please enter a start and end node');
+        } if (startDjikstra === endDjikstra) {
+            alert('Start and end node cannot be the same');
+        } 
+        else {
+            invoke('get_shortest_path', {
+              start_node_name: startDjikstra.trim(),
+              end_node_name: endDjikstra.trim()
+                }).then((res) => {
+                    console.log(res);
                 })
         setShowDjikstraInput(false);
       }
