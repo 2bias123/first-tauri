@@ -34,7 +34,13 @@ impl GlobalGraph {
 fn main() {
   tauri::Builder::default()
     .manage(GlobalGraph::new())
-    .invoke_handler(tauri::generate_handler![add_node,add_bidirectional_edge,reset_graph,print_graph,get_shortest_path])
+    .invoke_handler(tauri::generate_handler![add_node,
+        add_bidirectional_edge,
+        reset_graph,
+        print_graph,
+        get_shortest_path,
+        is_node_in_graph
+        ])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }
@@ -75,3 +81,8 @@ fn get_shortest_path(start_node_name:String, end_node_name: String, graph: State
     afa
 }
 
+#[tauri::command(rename_all = "snake_case")]
+fn is_node_in_graph(node_name: String, graph: State<'_,GlobalGraph>) -> bool{
+    let mut graph = graph.graph.lock().unwrap();
+    graph.is_node_in_graph(&Node::new(node_name))
+}

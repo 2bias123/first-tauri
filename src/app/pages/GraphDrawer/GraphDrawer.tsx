@@ -46,44 +46,83 @@ const GraphDrawer: React.FC = () => {
         });
       };
 
-        const handleSubmit = (e: { preventDefault: () => void }) => {
-            e.preventDefault();
-            if (edgeWeight === '') {
-              alert('Please enter a number');
-            } else {
-                const frst = newCircleArray[0];
-                const snd = newCircleArray[1];
-      
-                const pair: CirclePair = { start: frst, end: snd, edgeWeight: edgeWeight || 0};
-                setCirclePairs(prevPairs => [...prevPairs, pair]);
-                invoke('add_bidirectional_edge', {
-                    node1_name: pair.start.label,
-                    node2_name: pair.end.label,
-                    edge_weight: pair.edgeWeight
-                    })
-                newCircleArray.length = 0; // Reset the array
-                setShowEdgeWeightDefiner(false);
-                setEdgeWeight('');
-            }
-          };
-
-    const handleDjikstra = (e: { preventDefault: () => void }) => {
+    const handleSubmit = (e: { preventDefault: () => void }) => {
         e.preventDefault();
-        if (startDjikstra === '' || endDjikstra === '') {
-          alert('Please enter a start and end node');
-        } if (startDjikstra === endDjikstra) {
-            alert('Start and end node cannot be the same');
-        } 
-        else {
-            invoke('get_shortest_path', {
-              start_node_name: startDjikstra.trim(),
-              end_node_name: endDjikstra.trim()
-                }).then((res) => {
-                    console.log(res);
+        if (edgeWeight === '') {
+          alert('Please enter a number');
+        } else {
+            const frst = newCircleArray[0];
+            const snd = newCircleArray[1];
+  
+            const pair: CirclePair = { start: frst, end: snd, edgeWeight: edgeWeight || 0};
+            setCirclePairs(prevPairs => [...prevPairs, pair]);
+            invoke('add_bidirectional_edge', {
+                node1_name: pair.start.label,
+                node2_name: pair.end.label,
+                edge_weight: pair.edgeWeight
                 })
-        setShowDjikstraInput(false);
+            newCircleArray.length = 0; // Reset the array
+            setShowEdgeWeightDefiner(false);
+            setEdgeWeight('');
+        }
+      };
+    
+
+      const validateDijkstraInput = async (nodeValue: string) => {
+        // Remove whitespace from input
+        const testValue = nodeValue.replace(/\s/g, '');
+      
+        // Regular expression to match uppercase letters only
+        const re = /^[A-Z]+$/;
+      
+        if (testValue === '') {
+          alert('Please enter a node.');
+          return false;
+        }
+      
+        if (!re.test(testValue)) {
+          alert('The node name must consist of uppercase letters only.');
+          return false;
+        }
+      
+        try {
+          // Assuming 'invoke' returns a Promise, handle errors appropriately
+          const result = await invoke('is_node_in_graph', { node_name: testValue });
+      
+          if (!result) {
+            alert('The node you entered is not in the graph.');
+            return false;
+          }
+      
+          return true;
+        } catch (error) {
+          console.error('Error occurred:', error);
+          alert('An error occurred while validating the node.');
+          return false;
+        }
+      };
+              
+    const handleDjikstra = async (e: { preventDefault: () => void }) => {
+      e.preventDefault();
+
+      const validationStart = await validateDijkstraInput(startDjikstra);
+      const validationEnd = await validateDijkstraInput(endDjikstra);
+
+      if (!((validationStart) && (validationEnd))) {
+          return;
+      } if (startDjikstra === endDjikstra) {
+          alert('Start and end nodes cannot be the same');
+      } else {
+          invoke('get_shortest_path', {
+            start_node_name: startDjikstra.trim(),
+            end_node_name: endDjikstra.trim()
+              }).then((res) => {
+                  console.log(res);
+              })
+      setShowDjikstraInput(false);
       }
     }
+
     return (
         <div>
             <Canvas 

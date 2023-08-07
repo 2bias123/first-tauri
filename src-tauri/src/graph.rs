@@ -50,6 +50,13 @@ pub mod tgraph {
             }
         }
 
+        pub fn is_node_in_graph(&mut self, node: &T) -> bool{
+            match self.adj.get(node) {
+                Some(_) => true,
+                None => false,
+            }
+        }
+
         pub fn get_nodes_iterator(&mut self) -> std::collections::hash_map::Keys<T, HashMap<T, usize>> {
             self.adj.keys()
         }
