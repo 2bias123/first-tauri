@@ -1,5 +1,5 @@
 .container {
-    background-color: #F4F4FE;
+    background-color: white;
     border-radius: 5px;
     border-color:#6dd7fd;
     border-style: solid;
@@ -19,7 +19,7 @@
     border-color:#6dd7fd;
     border-style: solid;
     text-align: center;
-    background-color: #F4F4FE;
+    background-color: white;
     color: #6dd7fd;
 }
 
@@ -44,7 +44,7 @@
 }
 
 .buttonContainer button{
-    background-color: #F4F4FE;
+    background-color: white;
     border-radius: 5px;
     border-color:#6dd7fd;
     border-style: solid;
@@ -57,7 +57,7 @@
 
 .buttonContainer button:hover{
     background-color: #6dd7fd;
-    color: #F4F4FE;
+    color: white;
 }
 
 .error {

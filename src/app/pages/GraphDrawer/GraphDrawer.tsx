@@ -85,7 +85,7 @@ const GraphDrawer: React.FC = () => {
         }
       
         if (!re.test(testValue)) {
-          alert('The node name must consist of uppercase letters only.');
+          alert('The node name must consist letters only.');
           return false;
         }
       
@@ -109,8 +109,11 @@ const GraphDrawer: React.FC = () => {
     const handleDjikstra = async (e: { preventDefault: () => void }) => {
       e.preventDefault();
 
-      const validationStart = await validateDijkstraInput(startDjikstra);
-      const validationEnd = await validateDijkstraInput(endDjikstra);
+      const upperStartDjikstra = startDjikstra.toUpperCase();
+      const upperEndDjikstra = endDjikstra.toUpperCase();
+
+      const validationStart = await validateDijkstraInput(upperStartDjikstra);
+      const validationEnd = await validateDijkstraInput(upperEndDjikstra);
 
       if (!((validationStart) && (validationEnd))) {
           return;
@@ -118,8 +121,8 @@ const GraphDrawer: React.FC = () => {
           alert('Start and end nodes cannot be the same');
       } else {
         const shortestPath = await invoke('get_shortest_path', {
-            start_node_name: startDjikstra.trim(),
-            end_node_name: endDjikstra.trim()
+            start_node_name: upperStartDjikstra.trim(),
+            end_node_name: upperEndDjikstra.trim()
               })
       setShowDjikstraInput(false);
       setDjikstraResult(shortestPath);
@@ -136,6 +139,7 @@ const GraphDrawer: React.FC = () => {
             handleCircleClick={handleCircleClick}
             showEdgeWeightDefiner={showEdgeWeightDefiner}
             setShowDjikstraInput={setShowDjikstraInput}
+            setDjikstraResult={setDjikstraResult}
             />
             {showEdgeWeightDefiner && (
             <div className="edge-weight-definer-container">

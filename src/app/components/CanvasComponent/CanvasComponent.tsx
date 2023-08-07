@@ -12,6 +12,7 @@ interface CanvasProps {
   setCirclePairs: React.Dispatch<React.SetStateAction<CirclePair[]>>;
   handleCircleClick: (circle: Circle) => void;
   setShowDjikstraInput: React.Dispatch<React.SetStateAction<boolean>>;
+  setDjikstraResult: React.Dispatch<React.SetStateAction<never[]>>;
 }
   
 
@@ -37,6 +38,7 @@ const Canvas: React.FC<CanvasProps>= ({
   setLastClickedCircle,
   handleCircleClick,
   setShowDjikstraInput,
+  setDjikstraResult
 }) => {
     const [circles, setCircles] = useState<Circle[]>([]);
     const [alphabet, _] = useState('ABCDEFGHIJKLMNOPQRSTUVWXYZ');
@@ -49,6 +51,7 @@ const Canvas: React.FC<CanvasProps>= ({
       setLastClickedCircle([]);
       setCirclePairs([]);
       setIndex(0);
+      setDjikstraResult([]);
     }
 
     //This is used to update the label of the circle
