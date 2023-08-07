@@ -1,0 +1,29 @@
+/* DjikstraResultStyle.css */
+
+.djikstra-result-container {
+    position: absolute;
+    z-index: 1000;
+    top: 20px;
+    left: 20px;
+    border-radius: 5px;
+    border: 1px solid #6dd7fd;
+    background-color: white;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 300px;
+}
+
+.djikstra-result-container h2 {
+    margin: 0;
+    padding: 0;
+    font-size: 1.8rem;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.djikstra-result-container ul li {
+    color: #555;
+    margin-left: 30px; ;
+    margin-bottom: 5px;
+}

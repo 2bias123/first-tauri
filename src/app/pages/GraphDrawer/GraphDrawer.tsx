@@ -4,6 +4,7 @@ import EdgeWeightDefinerComponent from '../../components/EdgeWeightDefinerCompon
 import './GraphDrawerStyle.css'
 import { invoke } from '@tauri-apps/api/tauri';
 import DjikstraInput from '@/app/components/DjikstraInput/DjikstraInput';
+import DjikstraResult from '@/app/components/DjikstraResult/DjikstraResult';
 
 
 //Defines the structure of the circle object
@@ -20,6 +21,8 @@ interface Circle {
       edgeWeight: number;
   }
 
+  
+
 const GraphDrawer: React.FC = () => {
 
     const [showEdgeWeightDefiner, setShowEdgeWeightDefiner] = React.useState<boolean>(false);
@@ -30,6 +33,7 @@ const GraphDrawer: React.FC = () => {
     const [circlePairs, setCirclePairs] = useState<CirclePair[]>([]);
     const [edgeWeight, setEdgeWeight] = React.useState<number | ''>('');
     const [newCircleArray, setNewCircleArray] = useState<Circle[]>([]);
+    const [djikstraResult, setDjikstraResult] = React.useState([]);
     
     const handleCircleClick = (circle: Circle) => {
         if (showEdgeWeightDefiner) return;
@@ -113,13 +117,13 @@ const GraphDrawer: React.FC = () => {
       } if (startDjikstra === endDjikstra) {
           alert('Start and end nodes cannot be the same');
       } else {
-          invoke('get_shortest_path', {
+        const shortestPath = await invoke('get_shortest_path', {
             start_node_name: startDjikstra.trim(),
             end_node_name: endDjikstra.trim()
-              }).then((res) => {
-                  console.log(res);
               })
       setShowDjikstraInput(false);
+      setDjikstraResult(shortestPath);
+      return shortestPath;
       }
     }
 
@@ -154,6 +158,11 @@ const GraphDrawer: React.FC = () => {
         </div>
       )
         }
+         {djikstraResult && (
+        <div className="djikstra-result-section">
+          <DjikstraResult shortestPath={djikstraResult} />
+        </div>
+      )}
         </div>
     )};
 
