@@ -125,7 +125,7 @@ const GraphDrawer: React.FC = () => {
             end_node_name: upperEndDjikstra.trim()
               })
       setShowDjikstraInput(false);
-      setDjikstraResult(shortestPath);
+      setDjikstraResult(shortestPath as any);
       return shortestPath;
       }
     }
